@@ -1,0 +1,79 @@
+document.addEventListener("DOMContentLoaded",function(){
+let checker:string="lowerCaseLetters";
+const lowercaseLetters: string[] = [
+    'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',                                
+    'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
+];
+
+const uppercaseLetters: string[] = [
+    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',                                
+    'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
+];
+
+const numbers: string[] = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+const symbols: string[] = [
+    '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '_', '=', '+', '[',                        
+    ']', '{', '}', '|', ';', ':', '\'', '"', ',', '<', '.', '>', '/', '?', '`', '~'];
+
+const combinedLetters: string[] = [...lowercaseLetters, ...uppercaseLetters];
+const combinedLettersAndNumbers: string[] = [...combinedLetters, ...numbers];
+const everything: string[] = [...lowercaseLetters, ...uppercaseLetters, ...numbers, ...symbols];
+const map: Map<string, string[]> = new Map();
+map.set("lowerCaseLetters",lowercaseLetters);
+map.set("lowerCaseAndUpperCaseLetters",combinedLetters);
+map.set("lowerAndUpperWithNumbers",combinedLettersAndNumbers);
+map.set("lowerAndUpperWithNumbersAndSymbols",everything);
+const lengthOfPassword=8;
+const myRange = document.getElementById("myRange") as HTMLInputElement;
+const numberOfChars=document.getElementById("numberOfChars") as HTMLElement;
+let passwordText =document.querySelector(".password") as HTMLElement;
+if(myRange) {
+    myRange.addEventListener("input", function() {
+        const lengthOfPassword = parseInt(this.value);
+        numberOfChars.innerHTML=String(this.value);
+    });
+}
+const generateButton=document.getElementById("generate");
+generateButton?.addEventListener("click",function(){
+    let text="";
+    let currentArray=map.get(checker);
+    for(let i=0;i<Number(numberOfChars.innerHTML);i++){
+        if(currentArray){
+        let index = Math.floor(Math.random() * currentArray.length);
+        text += currentArray[index];
+        }
+    }
+   const passwordOutput = document.querySelector<HTMLInputElement>(".password");
+
+    if (passwordOutput) {
+        passwordOutput.value = text;
+    }
+       
+})
+let copyButton=document.getElementById("copy");
+copyButton?.addEventListener("click",function(){
+    let copyText=document.getElementById("password") as HTMLInputElement;
+    console.log("copied")
+    if(copyText){
+        copyText.select();
+        document.execCommand("copy");
+        copyText.setSelectionRange(copyText.value.length, copyText.value.length);
+    }
+})
+const arrayOfOptions = Array.from(document.querySelectorAll<HTMLElement>(".option"));
+arrayOfOptions.forEach(option=>{
+    if(option){
+        option.addEventListener("click",function(){
+            checker=this.id;
+            arrayOfOptions.forEach(element=>{
+                if(element!==option){
+                   element.style.borderWidth="0px"
+                }else{
+                    option.style.borderWidth="10px"
+                }
+                   
+            })
+        })
+    }
+})
+}) 
